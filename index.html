@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yolk Timer</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1><img class="logo-dance" src="https://images.unsplash.com/vector-1770724922204-edbf11e01683?q=80&w=1760&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Yolk Timer logo"/> Yolk Timer</h1>
+    <p class="subtitle">Perfect eggs, every time</p>
+    <button class="sound-toggle" id="sound-toggle" onclick="toggleSound()" title="Mute sounds">🔊</button>
+  </header>
+
+  <main>
+    <div class="carousel-wrapper">
+      <div class="carousel-dots-bar">
+        <div class="carousel-dots" id="carousel-dots">
+          <button class="dot active" data-index="0" aria-label="Boiled Egg"></button>
+          <button class="dot" data-index="1" aria-label="Omelette"></button>
+          <button class="dot" data-index="2" aria-label="Poached Egg"></button>
+          <button class="dot" data-index="3" aria-label="Scrambled Eggs"></button>
+          <button class="dot" data-index="4" aria-label="Sunny-side Up"></button>
+        </div>
+        <span class="carousel-section-name" id="carousel-section-name">Boiled Egg</span>
+      </div>
+      <div class="carousel-row">
+        <button class="carousel-arrow" id="carousel-prev">&#8249;</button>
+        <div class="carousel-viewport">
+
+    <!-- Egg Boiling Section -->
+    <section class="timer-section active">
+      <h2>Boiled Egg</h2>
+      <p class="section-desc">Choose your preferred doneness</p>
+
+      <div class="egg-presets">
+        <button class="preset-btn" data-target="egg" data-seconds="180">
+          <span class="preset-icon">🥚</span>
+          <span class="preset-name">Soft Boiled</span>
+          <span class="preset-time">3 min</span>
+        </button>
+        <button class="preset-btn" data-target="egg" data-seconds="360">
+          <span class="preset-icon">🥚</span>
+          <span class="preset-name">Medium Boiled</span>
+          <span class="preset-time">6 min</span>
+        </button>
+        <button class="preset-btn active" data-target="egg" data-seconds="600">
+          <span class="preset-icon">🥚</span>
+          <span class="preset-name">Hard Boiled</span>
+          <span class="preset-time">10 min</span>
+        </button>
+      </div>
+
+      <div class="timer-card" id="egg-card">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill" id="egg-ring" cx="60" cy="60" r="50" />
+          </svg>
+          <img class="ring-inner-img" id="egg-ring-img"
+            src="https://plus.unsplash.com/premium_vector-1728553013454-52aa8932bcfd?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Boiled egg"/>
+          <div class="timer-display egg-display-overlay" id="egg-display">10:00</div>
+        </div>
+
+        <!-- Egg boiling animation -->
+        <div class="egg-scene" id="egg-scene">
+          <svg class="egg-svg" viewBox="0 0 200 170" xmlns="http://www.w3.org/2000/svg">
+            <!-- Heat glow below pot -->
+            <ellipse id="pot-heat-glow" cx="100" cy="174" rx="65" ry="9" fill="#ff5500"/>
+            <!-- Burner flames (drawn before pot so pot body covers their tops) -->
+            <g id="pot-flames">
+              <path class="pot-flame" d="M58,184 Q50,172 58,161 Q65,172 62,184 Z" fill="#ff6b00"/>
+              <path class="pot-flame" d="M80,184 Q71,170 80,158 Q88,170 85,184 Z" fill="#ffaa00" style="animation-delay:.12s"/>
+              <path class="pot-flame" d="M100,184 Q91,168 100,155 Q109,168 106,184 Z" fill="#ff6b00" style="animation-delay:.06s"/>
+              <path class="pot-flame" d="M120,184 Q111,170 120,158 Q129,170 126,184 Z" fill="#ffaa00" style="animation-delay:.18s"/>
+              <path class="pot-flame" d="M142,184 Q134,172 142,161 Q149,172 146,184 Z" fill="#ff6b00" style="animation-delay:.09s"/>
+            </g>
+            <!-- Pot handles (steel gray) -->
+            <rect x="1"   y="90" width="24" height="12" rx="6" fill="#7a7a7a"/>
+            <rect x="175" y="90" width="24" height="12" rx="6" fill="#7a7a7a"/>
+            <!-- Pot rim (light gray) -->
+            <rect x="14"  y="82" width="172" height="12" rx="6" fill="#8a8a8a"/>
+            <!-- Pot body (medium gray — reads as steel/aluminum) -->
+            <rect x="20"  y="86" width="160" height="84" rx="8" fill="#484848"/>
+            <!-- Water (deep dark blue — high contrast with white egg) -->
+            <rect id="pot-water" x="22" y="94" width="156" height="74" rx="4" fill="#1a5fb8"/>
+            <!-- Heat shimmer at water bottom -->
+            <rect id="heat-water-bottom" x="22" y="152" width="156" height="16" rx="4" fill="rgba(255,80,0,0)"/>
+            <!-- Water surface waves -->
+            <ellipse id="ww1" cx="76"  cy="94" rx="36" ry="5"   fill="rgba(110,190,255,0.55)"/>
+            <ellipse id="ww2" cx="142" cy="94" rx="28" ry="3.5" fill="rgba(110,190,255,0.45)"/>
+            <ellipse id="ww3" cx="108" cy="94" rx="22" ry="4"   fill="rgba(110,190,255,0.4)"/>
+            <!-- Surface bubbles bursting at waterline -->
+            <circle class="surf-bubble" id="sb1" cx="44"  cy="94" r="5"   fill="rgba(150,215,255,0.85)"/>
+            <circle class="surf-bubble" id="sb2" cx="79"  cy="94" r="3.5" fill="rgba(150,215,255,0.8)"/>
+            <circle class="surf-bubble" id="sb3" cx="132" cy="94" r="4"   fill="rgba(150,215,255,0.85)"/>
+            <circle class="surf-bubble" id="sb4" cx="161" cy="94" r="3"   fill="rgba(150,215,255,0.75)"/>
+            <!-- Bubbles — positioned LEFT and RIGHT of egg so always visible -->
+            <circle class="egg-bubble" id="eb1" cx="40"  cy="150" r="7"/>
+            <circle class="egg-bubble" id="eb2" cx="58"  cy="160" r="5"/>
+            <circle class="egg-bubble" id="eb3" cx="160" cy="148" r="7"/>
+            <circle class="egg-bubble" id="eb4" cx="143" cy="160" r="5"/>
+            <circle class="egg-bubble" id="eb5"  cx="100" cy="166" r="5"/>
+            <!-- Extra rolling-boil bubbles -->
+            <circle class="egg-bubble" id="eb6"  cx="70"  cy="157" r="4"/>
+            <circle class="egg-bubble" id="eb7"  cx="86"  cy="164" r="3"/>
+            <circle class="egg-bubble" id="eb8"  cx="115" cy="164" r="3"/>
+            <circle class="egg-bubble" id="eb9"  cx="130" cy="154" r="4"/>
+            <circle class="egg-bubble" id="eb10" cx="52"  cy="164" r="3"/>
+            <circle class="egg-bubble" id="eb11" cx="148" cy="159" r="4"/>
+            <!-- Egg shadow cast on pot floor -->
+            <ellipse id="egg-water-shadow" cx="100" cy="162" rx="28" ry="7" fill="rgba(0,20,70,0.4)"/>
+            <!-- Egg character group (rises on done) -->
+            <g id="egg-anim-group">
+              <!-- Done golden glow -->
+              <circle id="egg-done-glow" cx="100" cy="133" r="42" fill="rgba(255,215,0,0.22)"/>
+              <!-- Egg body -->
+              <ellipse cx="100" cy="133" rx="28" ry="36" fill="#fff8f0" stroke="#e8d0a8" stroke-width="2"/>
+              <!-- Shine highlight -->
+              <ellipse cx="90" cy="116" rx="10" ry="6" fill="rgba(255,255,255,0.4)" transform="rotate(-20,90,116)"/>
+
+              <!-- ── IDLE face: calm / sleepy ── -->
+              <g id="face-idle">
+                <path d="M83,124 Q88,119 93,124" stroke="#777" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M107,124 Q112,119 117,124" stroke="#777" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M94,140 Q100,144 106,140" stroke="#aaa" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </g>
+
+              <!-- ── BOILING face: wide-eyed + sweating ── -->
+              <g id="face-boiling">
+                <!-- Worried eyebrows angled inward -->
+                <path d="M82,115 Q88,111 93,114" stroke="#888" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <path d="M107,114 Q112,111 118,115" stroke="#888" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+                <!-- Wide scared left eye -->
+                <ellipse cx="88" cy="124" rx="7" ry="8" fill="white" stroke="#d0c0a0" stroke-width="0.8"/>
+                <ellipse cx="88" cy="121" rx="3.5" ry="4" fill="#2a2a2a"/>
+                <circle  cx="86" cy="119" r="1.5" fill="white"/>
+                <!-- Wide scared right eye -->
+                <ellipse cx="112" cy="124" rx="7" ry="8" fill="white" stroke="#d0c0a0" stroke-width="0.8"/>
+                <ellipse cx="112" cy="121" rx="3.5" ry="4" fill="#2a2a2a"/>
+                <circle  cx="110" cy="119" r="1.5" fill="white"/>
+                <!-- Worried wavy mouth -->
+                <path d="M92,141 Q96,137 100,140 Q104,143 108,140" stroke="#999" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <!-- Sweat drops (teardrop shapes) -->
+                <path class="sweat-drop" d="M122,113 Q126,106 122,101 Q118,106 122,113 Z" fill="#7dd3ff"/>
+                <path class="sweat-drop" d="M77,121 Q73,114 77,109 Q81,114 77,121 Z"   fill="#7dd3ff" style="animation-delay:0.65s"/>
+              </g>
+
+              <!-- ── DONE face: happy + rosy cheeks ── -->
+              <g id="face-done">
+                <!-- Squinted happy eyes -->
+                <path d="M82,124 Q88,117 94,124" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <path d="M106,124 Q112,117 118,124" stroke="#555" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Big smile -->
+                <path d="M88,138 Q100,151 112,138" stroke="#666" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                <!-- Rosy cheeks -->
+                <ellipse cx="78"  cy="136" rx="9" ry="5.5" fill="rgba(255,110,90,0.4)"/>
+                <ellipse cx="122" cy="136" rx="9" ry="5.5" fill="rgba(255,110,90,0.4)"/>
+              </g>
+            </g>
+            <!-- Boil steam (visible during boiling) -->
+            <g id="egg-boil-steam">
+              <path class="boil-wisp" d="M38,84 Q34,75 38,67 Q42,59 38,52"/>
+              <path class="boil-wisp" d="M160,84 Q156,75 160,67 Q164,59 160,52" style="animation-delay:.5s"/>
+              <path class="boil-wisp" d="M74,82 Q70,73 74,65 Q78,57 74,50" style="animation-delay:.25s"/>
+              <path class="boil-wisp" d="M128,82 Q124,73 128,65 Q132,57 128,50" style="animation-delay:.75s"/>
+            </g>
+            <!-- Steam (visible when done) -->
+            <g id="egg-steam">
+              <path class="steam-wisp" d="M68,78 Q63,68 68,58 Q73,48 68,38"/>
+              <path class="steam-wisp" d="M100,75 Q95,65 100,55 Q105,45 100,35" style="animation-delay:.4s"/>
+              <path class="steam-wisp" d="M132,78 Q127,68 132,58 Q137,48 132,38" style="animation-delay:.8s"/>
+            </g>
+          </svg>
+          <p class="egg-scene-label" id="egg-scene-label">Choose a preset to start</p>
+        </div>
+
+        <div class="timer-controls">
+          <button class="btn btn-start" id="egg-start" onclick="startTimer('egg')">Start</button>
+          <button class="btn btn-pause" id="egg-pause" onclick="pauseTimer('egg')" disabled>Pause</button>
+          <button class="btn btn-reset" id="egg-reset" onclick="resetTimer('egg')">Reset</button>
+        </div>
+        <div class="status-msg" id="egg-status"></div>
+      </div>
+    </section>
+
+    <!-- Omelette Section -->
+    <section class="timer-section">
+      <h2>Omelette</h2>
+      <p class="section-desc">Follow the guided steps</p>
+
+      <div class="egg-presets">
+        <button class="preset-btn active" data-target="omelette" data-seconds="120">
+          <span class="preset-icon">🍳</span>
+          <span class="preset-name">Quick</span>
+          <span class="preset-time">2 min</span>
+        </button>
+        <button class="preset-btn" data-target="omelette" data-seconds="180">
+          <span class="preset-icon">🍳</span>
+          <span class="preset-name">Fluffy</span>
+          <span class="preset-time">3 min</span>
+        </button>
+        <button class="preset-btn" data-target="omelette" data-seconds="300">
+          <span class="preset-icon">🍳</span>
+          <span class="preset-name">Stuffed</span>
+          <span class="preset-time">5 min</span>
+        </button>
+      </div>
+
+      <div class="timer-card" id="omelette-card">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50" />
+            <circle class="ring-fill omelette-ring" id="omelette-ring" cx="60" cy="60" r="50" />
+          </svg>
+          <img class="ring-inner-img" id="omelette-ring-img"
+            src="https://images.unsplash.com/vector-1752217168413-6c900dbaf8dc?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Omelette"/>
+          <div class="timer-display omelette-display-overlay" id="omelette-display">2:00</div>
+        </div>
+        <!-- Omelette animation scene -->
+        <div class="omelette-scene" id="omelette-scene">
+          <svg class="omelette-svg" viewBox="0 0 200 155" xmlns="http://www.w3.org/2000/svg">
+            <!-- Steam (top, visible when done) -->
+            <g id="om-steam">
+              <path class="om-steam-wisp" d="M90,56 Q85,46 90,36 Q95,26 90,16"/>
+              <path class="om-steam-wisp" d="M115,53 Q110,43 115,33 Q120,23 115,13" style="animation-delay:.4s"/>
+              <path class="om-steam-wisp" d="M140,56 Q135,46 140,36 Q145,26 140,16" style="animation-delay:.8s"/>
+            </g>
+            <!-- Pan handle -->
+            <rect x="4" y="90" width="48" height="14" rx="7" fill="#555"/>
+            <ellipse cx="52" cy="97" rx="9" ry="10" fill="#666"/>
+            <!-- Pan outer -->
+            <ellipse cx="118" cy="98" rx="70" ry="46" fill="#222"/>
+            <!-- Pan inner cooking surface -->
+            <ellipse cx="118" cy="98" rx="61" ry="39" fill="#383838"/>
+            <!-- Butter/oil sheen -->
+            <ellipse id="om-butter" cx="108" cy="104" rx="20" ry="10" fill="rgba(255,220,80,0.2)"/>
+            <!-- Sizzle dots (when cooking) -->
+            <circle class="sizzle-dot" cx="72"  cy="94"  r="3"   fill="rgba(255,200,50,0.85)"/>
+            <circle class="sizzle-dot" cx="163" cy="91"  r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.18s"/>
+            <circle class="sizzle-dot" cx="150" cy="126" r="3"   fill="rgba(255,200,50,0.75)" style="animation-delay:.36s"/>
+            <circle class="sizzle-dot" cx="88"  cy="128" r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.54s"/>
+            <circle class="sizzle-dot" cx="132" cy="62"  r="2"   fill="rgba(255,200,50,0.7)"  style="animation-delay:.72s"/>
+            <circle class="sizzle-dot" cx="103" cy="60"  r="2.5" fill="rgba(255,200,50,0.75)" style="animation-delay:.90s"/>
+            <!-- Egg white (solidifies when cooking) -->
+            <ellipse id="om-egg-white" cx="118" cy="98" rx="38" ry="24" fill="rgba(255,248,230,0.55)"/>
+            <!-- Yolk -->
+            <circle id="om-yolk" cx="112" cy="92" r="13" fill="#f5a623"/>
+            <circle cx="107" cy="87" r="5" fill="rgba(255,240,100,0.55)"/>
+            <!-- Folded omelette (shown when done) -->
+            <ellipse id="om-folded"       cx="118" cy="98" rx="46" ry="20" fill="#d4a040"/>
+            <ellipse id="om-folded-shine" cx="106" cy="91" rx="16" ry="7"  fill="rgba(255,235,120,0.4)" transform="rotate(-12,106,91)"/>
+          </svg>
+          <p class="omelette-scene-label" id="omelette-scene-label">Choose a style to start</p>
+        </div>
+
+        <div class="timer-controls">
+          <button class="btn btn-start" id="omelette-start" onclick="startTimer('omelette')">Start</button>
+          <button class="btn btn-pause" id="omelette-pause" onclick="pauseTimer('omelette')" disabled>Pause</button>
+          <button class="btn btn-reset" id="omelette-reset" onclick="resetTimer('omelette')">Reset</button>
+        </div>
+        <div class="status-msg" id="omelette-status"></div>
+      </div>
+
+      <!-- Omelette Steps Guide -->
+      <div class="steps-guide" id="omelette-steps">
+        <h3>Steps Guide</h3>
+        <ol>
+          <li id="step-1">Heat pan on medium. Add butter.</li>
+          <li id="step-2">Pour in beaten eggs.</li>
+          <li id="step-3">Let edges set, then gently fold.</li>
+          <li id="step-4">Slide onto plate. Serve hot!</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ── Poached Egg ── -->
+    <section class="timer-section">
+      <h2>Poached Egg</h2>
+      <p class="section-desc">Silky whites, runny center</p>
+      <div class="egg-presets">
+        <button class="preset-btn active" data-target="poached" data-seconds="180">
+          <span class="preset-icon">💧</span><span class="preset-name">Runny</span><span class="preset-time">3 min</span>
+        </button>
+        <button class="preset-btn" data-target="poached" data-seconds="240">
+          <span class="preset-icon">💧</span><span class="preset-name">Classic</span><span class="preset-time">4 min</span>
+        </button>
+        <button class="preset-btn" data-target="poached" data-seconds="300">
+          <span class="preset-icon">💧</span><span class="preset-name">Firm</span><span class="preset-time">5 min</span>
+        </button>
+      </div>
+      <div class="timer-card" id="poached-card">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fill poached-ring" id="poached-ring" cx="60" cy="60" r="50"/>
+          </svg>
+          <img class="ring-inner-img" id="poached-ring-img"
+            src="https://images.unsplash.com/vector-1756376915076-eb57e4519aa3?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Poached egg"/>
+          <div class="timer-display poached-display-overlay" id="poached-display">3:00</div>
+        </div>
+        <div class="egg-type-scene" id="poached-scene">
+          <svg class="egg-type-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+            <g id="po-steam">
+              <path class="po-wisp" d="M90,50 Q85,40 90,30 Q95,20 90,12"/>
+              <path class="po-wisp" d="M116,47 Q111,37 116,27 Q121,17 116,9" style="animation-delay:.4s"/>
+              <path class="po-wisp" d="M142,50 Q137,40 142,30 Q147,20 142,12" style="animation-delay:.8s"/>
+            </g>
+            <rect x="3" y="88" width="46" height="13" rx="7" fill="#555"/>
+            <ellipse cx="49" cy="94" rx="9" ry="9" fill="#666"/>
+            <ellipse cx="120" cy="94" rx="70" ry="47" fill="#222"/>
+            <ellipse cx="120" cy="94" rx="61" ry="39" fill="#2a6fa8"/>
+            <ellipse id="por1" cx="100" cy="83" rx="22" ry="5" fill="rgba(180,230,255,0.35)"/>
+            <ellipse id="por2" cx="143" cy="102" rx="17" ry="4" fill="rgba(180,230,255,0.28)"/>
+            <ellipse id="po-white" cx="120" cy="94" rx="36" ry="27" fill="rgba(255,250,248,0.88)"/>
+            <circle class="po-bubble" cx="79"  cy="87"  r="4" fill="rgba(255,255,255,0.65)"/>
+            <circle class="po-bubble" cx="161" cy="85"  r="3" fill="rgba(255,255,255,0.6)"  style="animation-delay:.3s"/>
+            <circle class="po-bubble" cx="158" cy="108" r="4" fill="rgba(255,255,255,0.55)" style="animation-delay:.65s"/>
+            <circle class="po-bubble" cx="82"  cy="106" r="3" fill="rgba(255,255,255,0.6)"  style="animation-delay:.9s"/>
+            <g id="po-yolk-group">
+              <circle cx="120" cy="93" r="20" fill="#f5a623"/>
+              <circle cx="113" cy="87" r="6" fill="rgba(255,240,100,0.5)"/>
+              <g id="po-face-idle">
+                <path d="M112,91 Q117,87 122,91" stroke="#b87820" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M118,91 Q123,87 128,91" stroke="#b87820" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M114,99 Q120,102 126,99" stroke="#c08830" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+              </g>
+              <g id="po-face-cooking">
+                <path d="M110,86 Q116,82 121,85" stroke="#b87820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <path d="M119,85 Q124,82 130,86" stroke="#b87820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+                <ellipse cx="115" cy="91" rx="4.5" ry="5.5" fill="white" stroke="#d0b070" stroke-width="0.5"/>
+                <ellipse cx="115" cy="89" rx="2.2" ry="2.8" fill="#333"/>
+                <circle  cx="114" cy="88" r="1"   fill="white"/>
+                <ellipse cx="125" cy="91" rx="4.5" ry="5.5" fill="white" stroke="#d0b070" stroke-width="0.5"/>
+                <ellipse cx="125" cy="89" rx="2.2" ry="2.8" fill="#333"/>
+                <circle  cx="124" cy="88" r="1"   fill="white"/>
+                <ellipse cx="120" cy="99" rx="3" ry="2.5" fill="#b07820"/>
+                <path class="po-sweat" d="M133,79 Q136,73 133,69 Q130,73 133,79 Z" fill="#7dd3ff"/>
+                <path class="po-sweat" d="M107,81 Q104,75 107,71 Q110,75 107,81 Z" fill="#7dd3ff" style="animation-delay:.5s"/>
+              </g>
+              <g id="po-face-done">
+                <path d="M111,90 Q116,85 121,90" stroke="#885010" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M119,90 Q124,85 129,90" stroke="#885010" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <path d="M112,99 Q120,108 128,99" stroke="#885010" stroke-width="2" fill="none" stroke-linecap="round"/>
+                <ellipse cx="108" cy="99" rx="7" ry="4" fill="rgba(255,110,70,0.4)"/>
+                <ellipse cx="132" cy="99" rx="7" ry="4" fill="rgba(255,110,70,0.4)"/>
+              </g>
+            </g>
+          </svg>
+          <p class="egg-type-label" id="poached-label">Choose a style to start</p>
+        </div>
+        <div class="timer-controls">
+          <button class="btn btn-start" id="poached-start" onclick="startTimer('poached')">Start</button>
+          <button class="btn btn-pause" id="poached-pause" onclick="pauseTimer('poached')" disabled>Pause</button>
+          <button class="btn btn-reset" id="poached-reset" onclick="resetTimer('poached')">Reset</button>
+        </div>
+        <div class="status-msg" id="poached-status"></div>
+      </div>
+    </section>
+
+    <!-- ── Scrambled Eggs ── -->
+    <section class="timer-section">
+      <h2>Scrambled Eggs</h2>
+      <p class="section-desc">Soft curds, creamy texture</p>
+      <div class="egg-presets">
+        <button class="preset-btn active" data-target="scrambled" data-seconds="90">
+          <span class="preset-icon">🥄</span><span class="preset-name">Soft</span><span class="preset-time">1.5 min</span>
+        </button>
+        <button class="preset-btn" data-target="scrambled" data-seconds="150">
+          <span class="preset-icon">🥄</span><span class="preset-name">Classic</span><span class="preset-time">2.5 min</span>
+        </button>
+        <button class="preset-btn" data-target="scrambled" data-seconds="210">
+          <span class="preset-icon">🥄</span><span class="preset-name">Firm</span><span class="preset-time">3.5 min</span>
+        </button>
+      </div>
+      <div class="timer-card" id="scrambled-card">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fill scrambled-ring" id="scrambled-ring" cx="60" cy="60" r="50"/>
+          </svg>
+          <img class="ring-inner-img" id="scrambled-ring-img"
+            src="https://png.pngtree.com/png-vector/20240325/ourmid/pngtree-vector-single-clipart-scrambled-eggs-png-image_12200306.png"
+            alt="Scrambled eggs"/>
+          <div class="timer-display scrambled-display-overlay" id="scrambled-display">1:30</div>
+        </div>
+        <div class="egg-type-scene" id="scrambled-scene">
+          <svg class="egg-type-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+            <g id="sc-steam">
+              <path class="sc-wisp" d="M90,50 Q85,40 90,30 Q95,20 90,12"/>
+              <path class="sc-wisp" d="M116,47 Q111,37 116,27 Q121,17 116,9" style="animation-delay:.4s"/>
+              <path class="sc-wisp" d="M142,50 Q137,40 142,30 Q147,20 142,12" style="animation-delay:.8s"/>
+            </g>
+            <rect x="3" y="88" width="46" height="13" rx="7" fill="#555"/>
+            <ellipse cx="49" cy="94" rx="9" ry="9" fill="#666"/>
+            <ellipse cx="120" cy="94" rx="70" ry="47" fill="#222"/>
+            <ellipse cx="120" cy="94" rx="61" ry="39" fill="#383838"/>
+            <ellipse id="sc-base" cx="120" cy="94" rx="42" ry="28" fill="#e8b848"/>
+            <ellipse id="sc-mid"  cx="118" cy="91" rx="30" ry="20" fill="#f0d07a"/>
+            <ellipse id="sc-top"  cx="116" cy="88" rx="18" ry="12" fill="#f5e09a"/>
+            <circle class="sc-sizzle" cx="76"  cy="90"  r="3"   fill="rgba(255,200,50,0.85)"/>
+            <circle class="sc-sizzle" cx="164" cy="88"  r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.18s"/>
+            <circle class="sc-sizzle" cx="158" cy="112" r="3"   fill="rgba(255,200,50,0.75)" style="animation-delay:.36s"/>
+            <circle class="sc-sizzle" cx="80"  cy="110" r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.54s"/>
+            <circle class="sc-sizzle" cx="135" cy="67"  r="2"   fill="rgba(255,200,50,0.7)"  style="animation-delay:.72s"/>
+            <circle class="sc-sizzle" cx="106" cy="65"  r="2.5" fill="rgba(255,200,50,0.75)" style="animation-delay:.90s"/>
+            <g id="sc-face-idle">
+              <path d="M112,91 Q117,87 122,91" stroke="#a07820" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M118,91 Q123,87 128,91" stroke="#a07820" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M114,99 Q120,103 126,99" stroke="#b08830" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+            <g id="sc-face-cooking">
+              <path d="M109,86 Q115,82 121,86" stroke="#a07820" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M119,86 Q125,82 131,86" stroke="#a07820" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="115" cy="92" rx="5" ry="6" fill="rgba(255,248,220,0.92)" stroke="#c0a050" stroke-width="0.5"/>
+              <ellipse cx="115" cy="90" rx="2.5" ry="3" fill="#333"/>
+              <circle  cx="114" cy="89" r="1"    fill="white"/>
+              <ellipse cx="125" cy="92" rx="5" ry="6" fill="rgba(255,248,220,0.92)" stroke="#c0a050" stroke-width="0.5"/>
+              <ellipse cx="125" cy="90" rx="2.5" ry="3" fill="#333"/>
+              <circle  cx="124" cy="89" r="1"    fill="white"/>
+              <path d="M113,101 Q117,97 120,100 Q123,103 127,100" stroke="#a07820" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+            </g>
+            <g id="sc-face-done">
+              <path d="M111,90 Q117,85 122,90" stroke="#886010" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M118,90 Q124,85 129,90" stroke="#886010" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M112,100 Q120,109 128,100" stroke="#886010" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="108" cy="100" rx="7" ry="4" fill="rgba(255,160,60,0.4)"/>
+              <ellipse cx="132" cy="100" rx="7" ry="4" fill="rgba(255,160,60,0.4)"/>
+            </g>
+          </svg>
+          <p class="egg-type-label" id="scrambled-label">Choose a style to start</p>
+        </div>
+        <div class="timer-controls">
+          <button class="btn btn-start" id="scrambled-start" onclick="startTimer('scrambled')">Start</button>
+          <button class="btn btn-pause" id="scrambled-pause" onclick="pauseTimer('scrambled')" disabled>Pause</button>
+          <button class="btn btn-reset" id="scrambled-reset" onclick="resetTimer('scrambled')">Reset</button>
+        </div>
+        <div class="status-msg" id="scrambled-status"></div>
+      </div>
+    </section>
+
+    <!-- ── Sunny-side Up ── -->
+    <section class="timer-section">
+      <h2>Sunny-side Up</h2>
+      <p class="section-desc">Runny yolk, set whites</p>
+      <div class="egg-presets">
+        <button class="preset-btn active" data-target="sunny" data-seconds="120">
+          <span class="preset-icon">☀️</span><span class="preset-name">Runny</span><span class="preset-time">2 min</span>
+        </button>
+        <button class="preset-btn" data-target="sunny" data-seconds="180">
+          <span class="preset-icon">☀️</span><span class="preset-name">Set</span><span class="preset-time">3 min</span>
+        </button>
+        <button class="preset-btn" data-target="sunny" data-seconds="240">
+          <span class="preset-icon">☀️</span><span class="preset-name">Firm</span><span class="preset-time">4 min</span>
+        </button>
+      </div>
+      <div class="timer-card" id="sunny-card">
+        <div class="progress-ring-container">
+          <svg class="progress-ring" viewBox="0 0 120 120">
+            <circle class="ring-bg" cx="60" cy="60" r="50"/>
+            <circle class="ring-fill sunny-ring" id="sunny-ring" cx="60" cy="60" r="50"/>
+          </svg>
+          <img class="ring-inner-img" id="sunny-ring-img"
+            src="https://plus.unsplash.com/premium_vector-1747088378203-c8755e1b4531?q=80&w=300&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            alt="Sunny-side up egg"/>
+          <div class="timer-display sunny-display-overlay" id="sunny-display">2:00</div>
+        </div>
+        <div class="egg-type-scene" id="sunny-scene">
+          <svg class="egg-type-svg" viewBox="0 0 200 150" xmlns="http://www.w3.org/2000/svg">
+            <g id="su-steam">
+              <path class="su-wisp" d="M90,50 Q85,40 90,30 Q95,20 90,12"/>
+              <path class="su-wisp" d="M116,47 Q111,37 116,27 Q121,17 116,9" style="animation-delay:.4s"/>
+              <path class="su-wisp" d="M142,50 Q137,40 142,30 Q147,20 142,12" style="animation-delay:.8s"/>
+            </g>
+            <rect x="3" y="88" width="46" height="13" rx="7" fill="#555"/>
+            <ellipse cx="49" cy="94" rx="9" ry="9" fill="#666"/>
+            <ellipse cx="120" cy="94" rx="70" ry="47" fill="#222"/>
+            <ellipse cx="120" cy="94" rx="61" ry="39" fill="#383838"/>
+            <ellipse id="su-white" cx="120" cy="95" rx="44" ry="30" fill="rgba(255,252,248,0.55)"/>
+            <circle class="su-sizzle" cx="74"  cy="90"  r="3"   fill="rgba(255,200,50,0.85)"/>
+            <circle class="su-sizzle" cx="166" cy="88"  r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.2s"/>
+            <circle class="su-sizzle" cx="160" cy="114" r="3"   fill="rgba(255,200,50,0.75)" style="animation-delay:.4s"/>
+            <circle class="su-sizzle" cx="77"  cy="112" r="2.5" fill="rgba(255,200,50,0.8)"  style="animation-delay:.6s"/>
+            <circle class="su-sizzle" cx="138" cy="66"  r="2"   fill="rgba(255,200,50,0.7)"  style="animation-delay:.8s"/>
+            <circle id="su-yolk-glow" cx="120" cy="93" r="32" fill="rgba(255,200,50,0.18)"/>
+            <circle id="su-yolk"      cx="120" cy="93" r="24" fill="#f5a623"/>
+            <circle cx="112" cy="86" r="8" fill="rgba(255,240,100,0.5)"/>
+            <g id="su-face-idle">
+              <path d="M111,91 Q116,87 121,91" stroke="#c88020" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M119,91 Q124,87 129,91" stroke="#c88020" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M113,100 Q120,105 127,100" stroke="#c88020" stroke-width="2"   fill="none" stroke-linecap="round"/>
+            </g>
+            <g id="su-face-cooking">
+              <path d="M111,90 Q116,85 121,90" stroke="#c88020" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M119,90 Q124,85 129,90" stroke="#c88020" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <path d="M112,100 Q120,110 128,100" stroke="#c88020" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+              <ellipse cx="108" cy="101" rx="7" ry="4" fill="rgba(255,130,60,0.3)"/>
+              <ellipse cx="132" cy="101" rx="7" ry="4" fill="rgba(255,130,60,0.3)"/>
+            </g>
+            <g id="su-face-done">
+              <path d="M110,89 Q116,83 122,89" stroke="#c88020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M118,89 Q124,83 130,89" stroke="#c88020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <path d="M111,100 Q120,112 129,100" stroke="#c88020" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+              <ellipse cx="107" cy="101" rx="8" ry="5" fill="rgba(255,110,60,0.45)"/>
+              <ellipse cx="133" cy="101" rx="8" ry="5" fill="rgba(255,110,60,0.45)"/>
+            </g>
+          </svg>
+          <p class="egg-type-label" id="sunny-label">Choose a style to start</p>
+        </div>
+        <div class="timer-controls">
+          <button class="btn btn-start" id="sunny-start" onclick="startTimer('sunny')">Start</button>
+          <button class="btn btn-pause" id="sunny-pause" onclick="pauseTimer('sunny')" disabled>Pause</button>
+          <button class="btn btn-reset" id="sunny-reset" onclick="resetTimer('sunny')">Reset</button>
+        </div>
+        <div class="status-msg" id="sunny-status"></div>
+      </div>
+    </section>
+
+        </div><!-- /carousel-viewport -->
+        <button class="carousel-arrow" id="carousel-next">&#8250;</button>
+      </div><!-- /carousel-row -->
+    </div><!-- /carousel-wrapper -->
+
+    <!-- ── Fun Egg Facts ── -->
+    <div class="facts-section">
+      <div class="facts-card">
+        <div class="facts-left">
+          <img class="facts-img" src="https://plus.unsplash.com/premium_vector-1760727859823-b3768e562181?q=80&w=600&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Egg illustration"/>
+        </div>
+        <div class="facts-right">
+          <div class="facts-tag">🥚 Egg Facts</div>
+          <p class="fact-text" id="fact-text">Loading a fun egg fact…</p>
+          <div class="facts-footer">
+            <span class="fact-counter" id="fact-counter">1 / 15</span>
+            <div class="facts-btns">
+              <button class="btn-fact" onclick="prevFact()">‹ Prev</button>
+              <button class="btn-fact btn-fact-next" onclick="nextFact()">Next ›</button>
+            </div>
+          </div>
+          <div class="fact-progress">
+            <div class="fact-progress-bar" id="fact-bar"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Done Overlay -->
+  <div class="done-overlay" id="done-overlay">
+    <div class="done-box">
+      <div class="done-icon" id="done-icon">✅</div>
+      <h2 id="done-title">Done!</h2>
+      <p id="done-msg">Your food is ready.</p>
+      <button class="btn btn-start" onclick="closeDoneOverlay()">Great!</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

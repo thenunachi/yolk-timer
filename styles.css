@@ -1,0 +1,1096 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background:
+    linear-gradient(rgba(8, 12, 30, 0.72), rgba(8, 12, 30, 0.72)),
+    url('https://plus.unsplash.com/premium_vector-1752557511179-f4d216431323?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')
+    center / cover fixed;
+  /* fallback if image fails to load */
+  background-color: #0f1a3a;
+  min-height: 100vh;
+  color: #eee;
+  padding: 20px;
+}
+
+header {
+  text-align: center;
+  padding: 30px 0 20px;
+  position: relative;
+}
+
+.sound-toggle {
+  position: absolute;
+  top: 28px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sound-toggle:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 215, 0, 0.4);
+}
+
+.sound-toggle.muted {
+  opacity: 0.45;
+}
+
+header h1 {
+  font-size: 2.4rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.logo-dance {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  clip-path: circle(38% at 50% 48%);
+  animation: logo-dance 1.6s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+@keyframes logo-dance {
+  0%,  100% { transform: rotate(0deg)    translateY(0)    scale(1);    }
+  15%        { transform: rotate(-12deg)  translateY(-6px) scale(1.05); }
+  30%        { transform: rotate(10deg)   translateY(-3px) scale(1.03); }
+  45%        { transform: rotate(-8deg)   translateY(-5px) scale(1.05); }
+  60%        { transform: rotate(6deg)    translateY(-2px) scale(1.02); }
+  75%        { transform: rotate(-4deg)   translateY(-4px) scale(1.03); }
+  90%        { transform: rotate(2deg)    translateY(-1px) scale(1.01); }
+}
+
+.subtitle {
+  color: #aab;
+  font-size: 1rem;
+  margin-top: 6px;
+}
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px 0 60px;
+}
+
+/* ── Section ── */
+.timer-section {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 28px 24px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  display: none;
+}
+
+.timer-section.active {
+  display: block;
+}
+
+.timer-section.c-enter-right {
+  animation: c-enter-right 0.35s ease;
+}
+
+.timer-section.c-enter-left {
+  animation: c-enter-left 0.35s ease;
+}
+
+.timer-section h2 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.section-desc {
+  color: #99aacc;
+  font-size: 0.9rem;
+  margin-bottom: 18px;
+}
+
+/* ── Preset Buttons ── */
+.egg-presets {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 22px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  flex: 1;
+  min-width: 90px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  color: #ccc;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 12px 8px;
+  transition: all 0.2s;
+}
+
+.preset-btn:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 210, 80, 0.5);
+  color: #fff;
+}
+
+.preset-btn.active {
+  background: rgba(255, 200, 0, 0.15);
+  border-color: #ffd700;
+  color: #ffd700;
+}
+
+.preset-icon { font-size: 1.4rem; }
+.preset-name { font-size: 0.78rem; font-weight: 600; }
+.preset-time { font-size: 0.72rem; color: #aaa; }
+.preset-btn.active .preset-time { color: #ffdd55; }
+
+/* ── Timer Card ── */
+.timer-card {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 16px;
+  padding: 24px 16px;
+  text-align: center;
+}
+
+/* ── Progress Ring ── */
+.progress-ring-container {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 20px;
+}
+
+/* Image clipped inside a ring */
+.ring-inner-img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  z-index: 1;
+  pointer-events: none;
+  animation: ring-img-pulse 3s ease-in-out infinite;
+}
+
+/* Poached egg display */
+.poached-display-overlay {
+  z-index: 2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.28);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* Poached: gentle bob in water while cooking */
+.poached-cooking #poached-ring-img {
+  animation: ring-poach-bob 1.2s ease-in-out infinite;
+}
+
+@keyframes ring-poach-bob {
+  0%, 100% { transform: translate(-50%, -50%) translateY(0)    scale(1);    }
+  50%       { transform: translate(-50%, -50%) translateY(-4px) scale(1.04); }
+}
+
+/* Sunny-side up display */
+.sunny-display-overlay {
+  z-index: 2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.28);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* Sunny: sizzle while cooking */
+.sunny-cooking #sunny-ring-img {
+  animation: ring-img-sizzle 0.2s ease-in-out infinite;
+}
+
+/* Sunny: golden glow pulse when done */
+.sunny-done #sunny-ring-img {
+  animation: ring-img-pulse 1s ease-in-out infinite;
+  box-shadow: 0 0 16px 4px rgba(255,200,50,0.6);
+}
+
+/* Scrambled eggs display */
+.scrambled-display-overlay {
+  z-index: 2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.28);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* Scrambled: gentle sizzle like omelette */
+.scrambled-cooking #scrambled-ring-img {
+  animation: ring-img-sizzle 0.18s ease-in-out infinite;
+}
+
+/* Timer text sits on top of the egg image */
+.egg-display-overlay {
+  z-index: 2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.28);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* Timer text sits on top of the image */
+.omelette-display-overlay {
+  z-index: 2;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.9), 0 0 12px rgba(0,0,0,0.7);
+  background: rgba(0,0,0,0.28);
+  border-radius: 8px;
+  padding: 2px 6px;
+}
+
+/* Gentle pulse while idle */
+@keyframes ring-img-pulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1);    }
+  50%       { transform: translate(-50%, -50%) scale(1.04); }
+}
+
+/* Boiled egg: wobble while boiling */
+.egg-boiling #egg-ring-img {
+  animation: ring-egg-wobble 2.5s ease-in-out infinite;
+}
+
+/* Boiled egg: spring up when done */
+.egg-done #egg-ring-img {
+  animation: ring-egg-done 0.75s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+
+@keyframes ring-egg-wobble {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg)    scale(1);    }
+  20%       { transform: translate(-50%, -50%) rotate(-2.5deg) scale(1.02); }
+  55%       { transform: translate(-50%, -50%) rotate(2.5deg)  scale(1.02); }
+  80%       { transform: translate(-50%, -50%) rotate(-1.5deg) scale(1.01); }
+}
+
+@keyframes ring-egg-done {
+  0%   { transform: translate(-50%, -50%) scale(1)    rotate(0deg);  }
+  50%  { transform: translate(-50%, -50%) scale(1.12) rotate(-4deg); }
+  75%  { transform: translate(-50%, -50%) scale(1.08) rotate(3deg);  }
+  100% { transform: translate(-50%, -50%) scale(1.1)  rotate(0deg);  }
+}
+
+/* Sizzle while cooking */
+.omelette-cooking .ring-inner-img {
+  animation: ring-img-sizzle 0.18s ease-in-out infinite;
+}
+
+@keyframes ring-img-sizzle {
+  0%   { transform: translate(-50%, -50%) rotate(0deg)   scale(1);    }
+  25%  { transform: translate(-50%, -50%) rotate(-1deg)  scale(1.01); }
+  75%  { transform: translate(-50%, -50%) rotate(1deg)   scale(1.01); }
+  100% { transform: translate(-50%, -50%) rotate(0deg)   scale(1);    }
+}
+
+.progress-ring {
+  width: 160px;
+  height: 160px;
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.08);
+  stroke-width: 10;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: #ffd700;
+  stroke-width: 10;
+  stroke-linecap: round;
+  stroke-dasharray: 314;
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 0.5s linear, stroke 0.3s;
+}
+
+.ring-fill.omelette-ring {
+  stroke: #ff7043;
+}
+
+.timer-display {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* ── Controls ── */
+.timer-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn {
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 10px 22px;
+  transition: all 0.2s;
+}
+
+.btn-start {
+  background: #ffd700;
+  color: #1a1a2e;
+}
+.btn-start:hover { background: #ffeb3b; transform: translateY(-1px); }
+
+.btn-pause {
+  background: rgba(255, 255, 255, 0.12);
+  color: #eee;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.btn-pause:hover:not(:disabled) { background: rgba(255,255,255,0.2); }
+.btn-pause:disabled { opacity: 0.35; cursor: default; }
+
+.btn-reset {
+  background: rgba(255, 80, 80, 0.15);
+  color: #ff8080;
+  border: 1px solid rgba(255,80,80,0.3);
+}
+.btn-reset:hover { background: rgba(255,80,80,0.25); }
+
+/* ── Status ── */
+.status-msg {
+  min-height: 24px;
+  margin-top: 12px;
+  font-size: 0.9rem;
+  color: #90caf9;
+  font-style: italic;
+}
+
+/* ── Omelette Steps ── */
+.steps-guide {
+  margin-top: 20px;
+  background: rgba(255,112,67,0.08);
+  border: 1px solid rgba(255,112,67,0.2);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.steps-guide h3 {
+  font-size: 0.95rem;
+  color: #ff7043;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.steps-guide ol {
+  padding-left: 20px;
+}
+
+.steps-guide li {
+  font-size: 0.9rem;
+  color: #bbb;
+  margin-bottom: 6px;
+  transition: all 0.3s;
+}
+
+.steps-guide li.active-step {
+  color: #ff7043;
+  font-weight: 600;
+}
+
+/* ── Done Overlay ── */
+.done-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+
+.done-overlay.visible {
+  display: flex;
+}
+
+.done-box {
+  background: #1a1a2e;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 48px 40px;
+  text-align: center;
+  max-width: 340px;
+  width: 90%;
+  animation: pop 0.3s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.8); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.done-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+}
+
+.done-box h2 {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}
+
+.done-box p {
+  color: #aab;
+  margin-bottom: 24px;
+}
+
+/* ── Status: done ── */
+.status-msg.done {
+  color: #4ade80;
+  font-weight: 600;
+  font-style: normal;
+}
+
+/* ── Egg Scene ── */
+.egg-scene { margin: 14px 0 18px; text-align: center; }
+.egg-svg   { width: 190px; height: 162px; display: block; margin: 0 auto; overflow: visible; }
+.egg-scene-label { font-size: 0.8rem; color: #88aacc; margin-top: 6px; font-style: italic; min-height: 18px; transition: color 0.4s; }
+
+/* ── Omelette Scene ── */
+.omelette-scene { margin: 14px 0 18px; text-align: center; }
+.omelette-svg   { width: 190px; height: 147px; display: block; margin: 0 auto; overflow: visible; }
+.omelette-scene-label { font-size: 0.8rem; color: #88aacc; margin-top: 6px; font-style: italic; min-height: 18px; transition: color 0.4s; }
+
+/* ── Hidden defaults ── */
+.egg-bubble       { fill: rgba(255,255,255,0.7); opacity: 0; }
+#egg-done-glow    { opacity: 0; transform-box: fill-box; transform-origin: center; }
+#pot-heat-glow    { opacity: 0; transform-box: fill-box; transform-origin: center; }
+#egg-water-shadow { transition: opacity 0.3s; }
+#ww1, #ww2, #ww3 { opacity: 0; }
+.steam-wisp       { stroke: rgba(200,230,255,0.8); stroke-width: 3.5; fill: none; stroke-linecap: round; opacity: 0; }
+/* Face defaults — only idle visible */
+#face-boiling     { opacity: 0; }
+#face-done        { opacity: 0; }
+.sweat-drop       { opacity: 0; transform-box: fill-box; transform-origin: center top; }
+.pot-flame        { opacity: 0; transform-box: fill-box; transform-origin: center bottom; }
+.surf-bubble      { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.boil-wisp        { stroke: rgba(200,230,255,0.65); stroke-width: 2.5; fill: none; stroke-linecap: round; opacity: 0; }
+
+.sizzle-dot       { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.om-steam-wisp    { stroke: rgba(200,230,255,0.8); stroke-width: 3; fill: none; stroke-linecap: round; opacity: 0; }
+#om-folded        { opacity: 0; transform-box: fill-box; transform-origin: left center; }
+#om-folded-shine  { opacity: 0; transform-box: fill-box; transform-origin: left center; }
+
+/* ── EGG: Boiling ── */
+.egg-scene.boiling .egg-bubble { animation: egg-bubble-float 1.0s ease-in infinite; }
+.egg-scene.boiling #eb1  { animation-duration: 0.9s;  animation-delay: 0s;    }
+.egg-scene.boiling #eb2  { animation-duration: 1.1s;  animation-delay: 0.22s; }
+.egg-scene.boiling #eb3  { animation-duration: 0.85s; animation-delay: 0.5s;  }
+.egg-scene.boiling #eb4  { animation-duration: 1.2s;  animation-delay: 0.75s; }
+.egg-scene.boiling #eb5  { animation-duration: 1.0s;  animation-delay: 1.0s;  }
+.egg-scene.boiling #eb6  { animation-duration: 0.8s;  animation-delay: 0.18s; }
+.egg-scene.boiling #eb7  { animation-duration: 0.7s;  animation-delay: 0.62s; }
+.egg-scene.boiling #eb8  { animation-duration: 0.75s; animation-delay: 0.38s; }
+.egg-scene.boiling #eb9  { animation-duration: 0.9s;  animation-delay: 0.88s; }
+.egg-scene.boiling #eb10 { animation-duration: 0.65s; animation-delay: 1.25s; }
+.egg-scene.boiling #eb11 { animation-duration: 0.85s; animation-delay: 0.7s;  }
+
+.egg-scene.boiling #egg-anim-group {
+  animation: egg-wobble 1.0s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+.egg-scene.boiling #pot-heat-glow { animation: heat-glow-pulse 0.6s ease-in-out infinite; }
+.egg-scene.boiling #ww1 { animation: water-ripple 0.75s ease-in-out infinite; }
+.egg-scene.boiling #ww2 { animation: water-ripple 0.75s ease-in-out 0.38s infinite; }
+.egg-scene.boiling #ww3 { animation: water-ripple 0.75s ease-in-out 0.15s infinite; }
+.egg-scene.boiling #pot-flames .pot-flame { animation: flame-flicker 0.5s ease-in-out infinite alternate; }
+.egg-scene.boiling .surf-bubble { animation: surf-bubble-pop 1.1s ease-in-out infinite; }
+.egg-scene.boiling #sb2 { animation-delay: 0.28s; }
+.egg-scene.boiling #sb3 { animation-delay: 0.55s; }
+.egg-scene.boiling #sb4 { animation-delay: 0.82s; }
+.egg-scene.boiling #heat-water-bottom { animation: heat-water-glow 0.75s ease-in-out infinite; }
+.egg-scene.boiling #egg-boil-steam .boil-wisp { animation: steam-rise 1.5s ease-in-out infinite; }
+/* Boiling face */
+.egg-scene.boiling #face-idle    { opacity: 0; }
+.egg-scene.boiling #face-boiling { opacity: 1; }
+.egg-scene.boiling .sweat-drop   { animation: sweat-drip 1.3s ease-in infinite; }
+
+/* ── EGG: Idle breathe ── */
+.egg-scene:not(.boiling):not(.done) #egg-anim-group {
+  animation: egg-breathe 3.5s ease-in-out infinite;
+  transform-box: fill-box;
+  transform-origin: center bottom;
+}
+
+/* ── EGG: Done ── */
+.egg-scene.done #egg-water-shadow { animation: anim-fade-out 0.3s ease-out 0.2s forwards; }
+.egg-scene.done #egg-anim-group   { animation: egg-rise 0.75s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.egg-scene.done #egg-done-glow    { animation: done-glow 0.8s ease-out forwards; }
+.egg-scene.done .steam-wisp       { animation: steam-rise 2.2s ease-in-out infinite; }
+.egg-scene.done #face-idle        { opacity: 0; }
+.egg-scene.done #face-done {
+  animation: face-pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ── EGG: Pause ── */
+.egg-scene.scene-paused .egg-bubble,
+.egg-scene.scene-paused #egg-anim-group,
+.egg-scene.scene-paused #pot-heat-glow,
+.egg-scene.scene-paused #ww1,
+.egg-scene.scene-paused #ww2 { animation-play-state: paused; }
+
+/* ── OMELETTE: Cooking ── */
+.omelette-scene.cooking .sizzle-dot    { animation: sizzle-pop 0.85s ease-in-out infinite; }
+.omelette-scene.cooking #om-egg-white  { animation: egg-white-solidify 4s ease-out forwards; }
+
+/* ── OMELETTE: Done ── */
+.omelette-scene.done #om-yolk         { animation: anim-fade-out 0.4s ease-out forwards; }
+.omelette-scene.done #om-egg-white    { animation: anim-fade-out 0.3s ease-out 0.1s forwards; }
+.omelette-scene.done #om-butter       { animation: anim-fade-out 0.3s ease-out forwards; }
+.omelette-scene.done #om-folded       { animation: fold-open 0.6s ease-out 0.3s forwards; }
+.omelette-scene.done #om-folded-shine { animation: fold-open 0.5s ease-out 0.5s forwards; }
+.omelette-scene.done .om-steam-wisp   { animation: steam-rise 2.2s ease-in-out infinite; }
+.omelette-scene.done .sizzle-dot      { opacity: 0; animation: none; }
+
+/* ── OMELETTE: Pause ── */
+.omelette-scene.scene-paused .sizzle-dot,
+.omelette-scene.scene-paused #om-egg-white { animation-play-state: paused; }
+
+/* ── Keyframes ── */
+@keyframes egg-bubble-float {
+  0%   { opacity: 0;    transform: translateY(0)     translateX(0)    scale(0.35); }
+  12%  { opacity: 0.9;  transform: translateY(-8px)  translateX(2px)  scale(1);    }
+  45%  { opacity: 0.7;  transform: translateY(-30px) translateX(-2px) scale(1.1);  }
+  78%  { opacity: 0.3;  transform: translateY(-52px) translateX(2px)  scale(1.25); }
+  100% { opacity: 0;    transform: translateY(-65px) translateX(0)    scale(1.45); }
+}
+
+@keyframes egg-wobble {
+  0%, 100% { transform: rotate(0deg)     translateY(0);    }
+  20%       { transform: rotate(-2.5deg) translateY(-2px); }
+  55%       { transform: rotate(2.5deg)  translateY(-3px); }
+  80%       { transform: rotate(-1.5deg) translateY(-1px); }
+}
+
+@keyframes water-ripple {
+  0%, 100% { opacity: 0.35; transform: scaleX(1)    translateY(0);    }
+  50%       { opacity: 0.7;  transform: scaleX(1.1)  translateY(-3px); }
+}
+
+@keyframes heat-glow-pulse {
+  0%, 100% { opacity: 0.35; transform: scaleX(1)    scaleY(1);    }
+  50%       { opacity: 0.9;  transform: scaleX(1.15) scaleY(1.35); }
+}
+
+@keyframes egg-rise {
+  0%   { transform: translateY(0); }
+  55%  { transform: translateY(-42px) rotate(-6deg); }
+  75%  { transform: translateY(-36px) rotate(4deg);  }
+  100% { transform: translateY(-39px) rotate(0deg);  }
+}
+
+@keyframes crack-draw {
+  from { opacity: 1; stroke-dashoffset: 50; }
+  to   { opacity: 1; stroke-dashoffset: 0;  }
+}
+
+@keyframes done-glow {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+@keyframes steam-rise {
+  0%   { opacity: 0;   transform: translateY(0)     scaleX(1);   }
+  35%  { opacity: 0.8; }
+  100% { opacity: 0;   transform: translateY(-30px) scaleX(1.5); }
+}
+
+@keyframes sizzle-pop {
+  0%, 100% { opacity: 0;   transform: scale(1)    translateY(0);    }
+  40%       { opacity: 0.9; transform: scale(1.6)  translateY(-5px); }
+  70%       { opacity: 0.5; transform: scale(1.25) translateY(-3px); }
+}
+
+@keyframes egg-white-solidify {
+  from { fill: rgba(255,248,230,0.55); }
+  to   { fill: rgba(255,250,245,0.95); }
+}
+
+@keyframes fold-open {
+  from { opacity: 0; transform: scaleX(0.15); }
+  to   { opacity: 1; transform: scaleX(1);    }
+}
+
+@keyframes anim-fade-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes anim-fade-out { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes flame-flicker {
+  0%   { transform: scaleY(1)    scaleX(1);    opacity: 0.9;  }
+  30%  { transform: scaleY(1.14) scaleX(0.9);  opacity: 1;    }
+  65%  { transform: scaleY(0.88) scaleX(1.1);  opacity: 0.8;  }
+  100% { transform: scaleY(1.06) scaleX(0.95); opacity: 0.92; }
+}
+
+@keyframes surf-bubble-pop {
+  0%   { opacity: 0;   transform: scale(0.1) translateY(5px);  }
+  18%  { opacity: 0.9; transform: scale(1)   translateY(0);    }
+  55%  { opacity: 0.4; transform: scale(1.6) translateY(-6px); }
+  85%  { opacity: 0;   transform: scale(2.3) translateY(-11px);}
+  100% { opacity: 0;   transform: scale(2.5) translateY(-13px);}
+}
+
+@keyframes heat-water-glow {
+  0%, 100% { fill: rgba(255,70,0,0.03); }
+  50%       { fill: rgba(255,70,0,0.2);  }
+}
+
+@keyframes sweat-drip {
+  0%   { opacity: 0;   transform: translateY(-4px) scale(0.8); }
+  20%  { opacity: 1;   transform: translateY(0)    scale(1);   }
+  70%  { opacity: 0.8; transform: translateY(16px) scale(0.9); }
+  100% { opacity: 0;   transform: translateY(26px) scale(0.6); }
+}
+
+@keyframes face-pop-in {
+  from { opacity: 0; transform: scale(0.5); }
+  to   { opacity: 1; transform: scale(1);   }
+}
+
+@keyframes egg-breathe {
+  0%, 100% { transform: translateY(0)   scaleY(1);    }
+  50%       { transform: translateY(-3px) scaleY(1.02); }
+}
+
+/* ── Fun Egg Facts ── */
+.facts-section {
+  width: 100%;
+  max-width: 960px;
+  margin: 10px auto 20px;
+  padding: 0 4px;
+}
+
+.facts-card {
+  display: flex;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.04);
+  backdrop-filter: blur(10px);
+  min-height: 200px;
+}
+
+.facts-left {
+  flex: 0 0 220px;
+  position: relative;
+  overflow: hidden;
+}
+
+.facts-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0.85;
+  transition: opacity 0.3s;
+}
+
+.facts-img:hover { opacity: 1; }
+
+.facts-right {
+  flex: 1;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.facts-tag {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ffd700;
+  opacity: 0.85;
+}
+
+.fact-text {
+  font-size: 1.1rem;
+  line-height: 1.65;
+  color: #e8eaf0;
+  flex: 1;
+  transition: opacity 0.2s ease;
+  min-height: 60px;
+}
+
+.fact-text.fading { opacity: 0; }
+
+.facts-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fact-counter {
+  font-size: 0.8rem;
+  color: #6688aa;
+  font-variant-numeric: tabular-nums;
+}
+
+.facts-btns { display: flex; gap: 8px; }
+
+.btn-fact {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  color: #ccd;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 16px;
+  transition: all 0.2s;
+}
+
+.btn-fact:hover { background: rgba(255,255,255,0.16); color: #fff; }
+
+.btn-fact-next {
+  background: rgba(255,215,0,0.12);
+  border-color: rgba(255,215,0,0.35);
+  color: #ffd700;
+}
+
+.btn-fact-next:hover { background: rgba(255,215,0,0.22); }
+
+.fact-progress {
+  height: 3px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.fact-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #ffd700, #ffaa00);
+  border-radius: 2px;
+  transition: width 0.1s linear;
+}
+
+@media (max-width: 600px) {
+  .facts-card    { flex-direction: column; }
+  .facts-left    { flex: 0 0 160px; }
+  .facts-right   { padding: 20px; }
+  .fact-text     { font-size: 1rem; }
+}
+
+/* ── Chicken orbit ── */
+.chicken-orbit {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+
+/* Handles left/right flip based on direction of travel */
+.chicken-face {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.15s ease;
+}
+
+.chicken-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  animation: chicken-run 0.32s ease-in-out infinite;
+  filter: drop-shadow(0 2px 5px rgba(0,0,0,0.55));
+  transform-origin: center bottom;
+}
+
+.chicken-orbit.paused .chicken-img { animation-play-state: paused; }
+
+@keyframes chicken-run {
+  0%   { transform: translateY(0)    rotate(0deg)   scaleY(1);    }
+  20%  { transform: translateY(-5px) rotate(-12deg) scaleY(1.06); }
+  40%  { transform: translateY(-8px) rotate(0deg)   scaleY(0.94); }
+  60%  { transform: translateY(-5px) rotate(12deg)  scaleY(1.06); }
+  80%  { transform: translateY(-2px) rotate(3deg)   scaleY(0.97); }
+  100% { transform: translateY(0)    rotate(0deg)   scaleY(1);    }
+}
+
+/* ── New egg type ring colours ── */
+.ring-fill.poached-ring  { stroke: #38bdf8; }
+.ring-fill.scrambled-ring { stroke: #facc15; }
+.ring-fill.sunny-ring    { stroke: #fb923c; }
+
+/* ── Shared egg-type scene layout ── */
+.egg-type-scene { margin: 14px 0 18px; text-align: center; }
+.egg-type-svg   { width: 190px; height: 143px; display: block; margin: 0 auto; overflow: visible; }
+.egg-type-label { font-size: 0.8rem; color: #88aacc; margin-top: 6px; font-style: italic; min-height: 18px; transition: color 0.4s; }
+
+/* ── Hidden defaults ── */
+#po-face-cooking { opacity: 0; }
+#po-face-done    { opacity: 0; }
+.po-bubble       { opacity: 0; }
+.po-sweat        { opacity: 0; transform-box: fill-box; transform-origin: center top; }
+.po-wisp         { stroke: rgba(200,230,255,0.8); stroke-width: 3; fill: none; stroke-linecap: round; opacity: 0; }
+#por1, #por2     { opacity: 0; }
+
+#sc-face-cooking { opacity: 0; }
+#sc-face-done    { opacity: 0; }
+.sc-sizzle       { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.sc-wisp         { stroke: rgba(200,230,255,0.8); stroke-width: 3; fill: none; stroke-linecap: round; opacity: 0; }
+
+#su-face-cooking { opacity: 0; }
+#su-face-done    { opacity: 0; }
+.su-sizzle       { opacity: 0; transform-box: fill-box; transform-origin: center; }
+.su-wisp         { stroke: rgba(200,230,255,0.8); stroke-width: 3; fill: none; stroke-linecap: round; opacity: 0; }
+#su-yolk-glow    { opacity: 0; transform-box: fill-box; transform-origin: center; }
+
+/* ── Idle breathe ── */
+#poached-scene:not(.cooking):not(.done)  #po-yolk-group { animation: egg-breathe 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+#scrambled-scene:not(.cooking):not(.done) #sc-mid        { animation: egg-breathe 3s   ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+#sunny-scene:not(.cooking):not(.done)    #su-yolk        { animation: egg-breathe 3.5s ease-in-out infinite; transform-box: fill-box; transform-origin: center bottom; }
+
+/* ── POACHED: Cooking ── */
+#poached-scene.cooking #po-face-idle    { opacity: 0; }
+#poached-scene.cooking #po-face-cooking { opacity: 1; }
+#poached-scene.cooking .po-bubble       { animation: po-bubble-rise 1.7s ease-in infinite; }
+#poached-scene.cooking .po-bubble:nth-child(2) { animation-duration: 2.1s; animation-delay: .3s; }
+#poached-scene.cooking .po-bubble:nth-child(3) { animation-duration: 1.5s; animation-delay: .65s; }
+#poached-scene.cooking .po-bubble:nth-child(4) { animation-duration: 2.0s; animation-delay: .9s; }
+#poached-scene.cooking #por1            { animation: water-ripple 1.5s ease-in-out infinite; }
+#poached-scene.cooking #por2            { animation: water-ripple 1.5s ease-in-out .75s infinite; }
+#poached-scene.cooking .po-sweat        { animation: sweat-drip 1.3s ease-in infinite; }
+
+/* ── POACHED: Done ── */
+#poached-scene.done #po-face-idle { opacity: 0; }
+#poached-scene.done #po-face-done {
+  animation: face-pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+  transform-box: fill-box; transform-origin: center;
+}
+#poached-scene.done .po-wisp { animation: steam-rise 2.2s ease-in-out infinite; }
+#poached-scene.done #po-white { animation: po-white-set 0.7s ease-out 0.4s forwards; }
+
+/* ── POACHED: Pause ── */
+#poached-scene.scene-paused .po-bubble,
+#poached-scene.scene-paused .po-sweat,
+#poached-scene.scene-paused #por1,
+#poached-scene.scene-paused #por2 { animation-play-state: paused; }
+
+/* ── SCRAMBLED: Cooking ── */
+#scrambled-scene.cooking #sc-face-idle    { opacity: 0; }
+#scrambled-scene.cooking #sc-face-cooking { opacity: 1; }
+#scrambled-scene.cooking .sc-sizzle       { animation: sizzle-pop 0.85s ease-in-out infinite; }
+#scrambled-scene.cooking #sc-base         { animation: sc-wobble 0.9s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+#scrambled-scene.cooking #sc-mid          { animation: sc-wobble 0.9s ease-in-out .15s infinite; transform-box: fill-box; transform-origin: center; }
+
+/* ── SCRAMBLED: Done ── */
+#scrambled-scene.done #sc-face-idle { opacity: 0; }
+#scrambled-scene.done #sc-face-done {
+  animation: face-pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+  transform-box: fill-box; transform-origin: center;
+}
+#scrambled-scene.done .sc-wisp { animation: steam-rise 2.2s ease-in-out infinite; }
+#scrambled-scene.done #sc-base { animation: sc-puff 0.6s ease-out forwards; transform-box: fill-box; transform-origin: center; }
+
+/* ── SCRAMBLED: Pause ── */
+#scrambled-scene.scene-paused .sc-sizzle,
+#scrambled-scene.scene-paused #sc-base,
+#scrambled-scene.scene-paused #sc-mid { animation-play-state: paused; }
+
+/* ── SUNNY: Cooking ── */
+#sunny-scene.cooking #su-face-idle    { opacity: 0; }
+#sunny-scene.cooking #su-face-cooking { opacity: 1; }
+#sunny-scene.cooking .su-sizzle       { animation: sizzle-pop 0.85s ease-in-out infinite; }
+#sunny-scene.cooking #su-white        { animation: egg-white-solidify 4s ease-out forwards; }
+#sunny-scene.cooking #su-yolk-glow    { animation: su-glow-pulse 1.6s ease-in-out infinite; }
+
+/* ── SUNNY: Done ── */
+#sunny-scene.done #su-face-idle { opacity: 0; }
+#sunny-scene.done #su-face-done {
+  animation: face-pop-in 0.55s cubic-bezier(0.34,1.56,0.64,1) 0.3s both;
+  transform-box: fill-box; transform-origin: center;
+}
+#sunny-scene.done .su-wisp    { animation: steam-rise 2.2s ease-in-out infinite; }
+#sunny-scene.done #su-yolk-glow { animation: done-glow 0.8s ease-out forwards; }
+
+/* ── SUNNY: Pause ── */
+#sunny-scene.scene-paused .su-sizzle,
+#sunny-scene.scene-paused #su-white,
+#sunny-scene.scene-paused #su-yolk-glow { animation-play-state: paused; }
+
+/* ── New keyframes ── */
+@keyframes po-bubble-rise {
+  0%   { opacity: 0;    transform: translateY(0)     scale(0.5); }
+  20%  { opacity: 0.85; transform: translateY(-8px)  scale(1);   }
+  80%  { opacity: 0.4;  transform: translateY(-48px) scale(1.2); }
+  100% { opacity: 0;    transform: translateY(-65px) scale(1.5); }
+}
+
+@keyframes po-white-set {
+  from { fill: rgba(255,250,248,0.88); }
+  to   { fill: rgba(255,252,250,0.98); }
+}
+
+@keyframes sc-wobble {
+  0%, 100% { transform: scale(1)    rotate(0deg);  }
+  30%       { transform: scale(1.03) rotate(-1.5deg); }
+  70%       { transform: scale(1.03) rotate(1.5deg);  }
+}
+
+@keyframes sc-puff {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08) translateY(-3px); }
+  100% { transform: scale(1.04) translateY(-2px); }
+}
+
+@keyframes su-glow-pulse {
+  0%, 100% { opacity: 0.18; transform: scale(1);    }
+  50%       { opacity: 0.4;  transform: scale(1.06); }
+}
+
+/* ── Carousel ── */
+.carousel-wrapper {
+  width: 100%;
+  max-width: 520px;
+}
+
+.carousel-dots-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.carousel-section-name {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #88aacc;
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: #ffd700;
+  width: 28px;
+  border-radius: 4px;
+}
+
+.dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.45);
+}
+
+.carousel-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.carousel-arrow {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: #ccc;
+  font-size: 1.9rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  padding: 0 0 2px 0;
+}
+
+.carousel-arrow:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 215, 0, 0.45);
+  color: #fff;
+}
+
+.carousel-viewport {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+@keyframes c-enter-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes c-enter-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Responsive ── */
+@media (max-width: 500px) {
+  .timer-section { padding: 20px 14px; }
+  .egg-presets { gap: 6px; }
+  .preset-btn { padding: 10px 4px; min-width: 70px; }
+  .carousel-arrow { width: 34px; height: 34px; font-size: 1.5rem; }
+}
