@@ -995,7 +995,7 @@ main {
 /* ── Carousel ── */
 .carousel-wrapper {
   width: 100%;
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .carousel-dots-bar {
@@ -1087,10 +1087,118 @@ main {
   to   { opacity: 1; transform: translateX(0); }
 }
 
-/* ── Responsive ── */
+/* ── Responsive width (mobile) ── */
 @media (max-width: 500px) {
-  .timer-section { padding: 20px 14px; }
-  .egg-presets { gap: 6px; }
-  .preset-btn { padding: 10px 4px; min-width: 70px; }
-  .carousel-arrow { width: 34px; height: 34px; font-size: 1.5rem; }
+  /* Header */
+  header { padding: 12px 0 8px; }
+  header h1 { font-size: 1.7rem; gap: 8px; }
+  .logo-dance { width: 40px; height: 40px; }
+  .subtitle { font-size: 0.88rem; margin-top: 4px; }
+  .sound-toggle { top: 12px; right: 8px; width: 34px; height: 34px; font-size: 1rem; }
+
+  /* Carousel chrome */
+  .carousel-wrapper { max-width: 100%; }
+  .carousel-dots-bar { gap: 5px; margin-bottom: 8px; }
+  .carousel-row { gap: 5px; }
+  .carousel-arrow { width: 30px; height: 30px; font-size: 1.3rem; }
+
+  /* Section */
+  .timer-section { padding: 14px 12px; }
+  .timer-section h2 { font-size: 1.25rem; margin-bottom: 2px; }
+  .section-desc { font-size: 0.82rem; margin-bottom: 12px; }
+
+  /* Presets */
+  .egg-presets { gap: 5px; margin-bottom: 12px; }
+  .preset-btn { padding: 8px 4px; min-width: 0; }
+  .preset-icon { font-size: 1.1rem; }
+  .preset-name { font-size: 0.7rem; }
+  .preset-time { font-size: 0.65rem; }
+
+  /* Timer card */
+  .timer-card { padding: 12px 10px; }
+
+  /* Progress ring — shrink to 120 px */
+  .progress-ring-container { width: 120px; height: 120px; margin-bottom: 10px; }
+  .progress-ring { width: 120px; height: 120px; }
+  .ring-inner-img { width: 56px; height: 56px; }
+  .timer-display { font-size: 1.45rem; }
+
+  /* Animation scenes */
+  .egg-scene       { margin: 6px 0 8px; }
+  .egg-svg         { width: 148px; height: 126px; }
+  .omelette-scene  { margin: 6px 0 8px; }
+  .omelette-svg    { width: 148px; height: 112px; }
+  .egg-type-scene  { margin: 6px 0 8px; }
+  .egg-type-svg    { width: 148px; height: 110px; }
+
+  /* Controls */
+  .timer-controls { gap: 7px; }
+  .btn { padding: 8px 14px; font-size: 0.85rem; }
+  .status-msg { margin-top: 6px; min-height: 18px; font-size: 0.82rem; }
+
+  /* Omelette steps */
+  .steps-guide { padding: 12px 14px; margin-top: 12px; }
+  .steps-guide li { font-size: 0.82rem; margin-bottom: 4px; }
+
+  /* Facts card */
+  .facts-section { margin: 8px auto 16px; padding: 0 2px; }
+  .facts-card { min-height: unset; }
+  .facts-img {
+    width: 25%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0.85;
+    transition: opacity 0.3s;
+  }
+  .facts-right { padding: 16px 18px; gap: 10px; }
+  .fact-text { font-size: 0.95rem; min-height: 50px; }
+  .facts-tag { font-size: 0.7rem; }
+}
+
+/* ── Compact layout for short viewports (laptops ~700 px tall) ── */
+@media (max-height: 760px) {
+  main   { padding: 10px 0 20px; }
+  header { padding: 14px 0 10px; }
+
+  .carousel-dots-bar { gap: 6px; margin-bottom: 10px; }
+
+  .timer-section { padding: 16px 20px; }
+
+  .timer-card { padding: 14px 12px; }
+
+  /* Shrink progress ring */
+  .progress-ring-container {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 14px;
+  }
+  .progress-ring { width: 130px; height: 130px; }
+  .ring-inner-img { width: 64px; height: 64px; }
+  .timer-display { font-size: 1.6rem; }
+
+  /* Shrink animation scenes */
+  .egg-scene  { margin: 8px 0 10px; }
+  .egg-svg    { width: 155px; height: 132px; }
+
+  .omelette-scene { margin: 8px 0 10px; }
+  .omelette-svg   { width: 155px; height: 120px; }
+
+  .egg-type-scene { margin: 8px 0 10px; }
+  .egg-type-svg   { width: 155px; height: 116px; }
+
+  /* Tighten presets */
+  .egg-presets { margin-bottom: 14px; }
+  .preset-btn  { padding: 8px 6px; }
+  .preset-icon { font-size: 1.1rem; }
+
+  /* Smaller controls */
+  .btn { padding: 8px 18px; font-size: 0.88rem; }
+
+  .status-msg { margin-top: 8px; min-height: 20px; font-size: 0.85rem; }
+
+  /* Facts section */
+  .facts-section { margin: 6px auto 10px; }
+  .facts-left    { flex: 0 0 160px; }
+  .facts-right   { padding: 18px 22px; }
 }
